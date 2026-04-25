@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/release-slots",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/send-reminders",
+      "schedule": "*/5 * * * *"
+    }
+  ]
+}
