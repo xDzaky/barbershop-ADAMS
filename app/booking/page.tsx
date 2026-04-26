@@ -425,7 +425,8 @@ export default function BookingPage() {
         setSubmitting(false)
         return
       }
-      router.push(`/booking/${data.booking_code}`)
+      // Redirect to payment page
+      router.push(`/booking/payment/${data.booking_code}`)
     } catch {
       setError('Terjadi kesalahan, coba beberapa saat lagi')
       setSubmitting(false)
