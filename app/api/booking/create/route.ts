@@ -59,8 +59,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Slot baru saja dipesan orang lain' }, { status: 409 })
   }
 
-  // 5. Generate unique booking code
-  const bookingCode = `BRB-${Date.now().toString(36).toUpperCase().slice(-4)}-${Math.random().toString(36).slice(2, 5).toUpperCase()}`
+  // 5. Generate unique booking code with format DD-XXX (reset monthly)
+  const now = new Date()
+  const day = now.getDate().toString().padStart(2, '0')
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
+  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString()
+  
+  // Count bookings this month to get next queue number
+  const { count: monthCount } = await supabase
+    .from('bookings')
+    .select('*', { count: 'exact', head: true })
+    .gte('created_at', monthStart)
+    .lt('created_at', monthEnd)
+  
+  const queueNumber = ((monthCount || 0) + 1).toString().padStart(3, '0')
+  const bookingCode = `${day}-${queueNumber}`
 
   // 6. Fetch service for dp_amount
   const { data: service, error: serviceError } = await supabase

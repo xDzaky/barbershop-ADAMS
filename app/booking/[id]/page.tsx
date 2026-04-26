@@ -91,9 +91,19 @@ export default function BookingStatusPage() {
 
       {/* Status Badge */}
       <div className="fade-in" style={{ textAlign: 'center', marginBottom: '24px' }}>
-        <div style={{ fontSize: '2.25rem', marginBottom: '8px' }}>{status.icon}</div>
-        <div className="booking-code">{booking.booking_code}</div>
-        <div style={{ marginTop: '10px' }}>
+        <div style={{ fontSize: '2.25rem', marginBottom: '12px' }}>{status.icon}</div>
+        
+        {/* Nomor Antrian Display */}
+        <div style={{ marginBottom: '12px' }}>
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>
+            Nomor Antrian
+          </p>
+          <div className="booking-code" style={{ fontSize: '2rem', padding: '16px 32px', letterSpacing: '0.15em' }}>
+            {booking.booking_code}
+          </div>
+        </div>
+        
+        <div style={{ marginTop: '12px' }}>
           <span className={`badge ${status.badge}`}>{status.label}</span>
         </div>
       </div>
