@@ -54,23 +54,10 @@ export default function PaymentPage() {
     setProcessing(true)
 
     if (paymentMethod === 'cash') {
-      // Bayar langsung - confirm booking
-      try {
-        const response = await fetch('/api/booking/confirm-cash', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ booking_id: booking.id })
-        })
-
-        if (response.ok) {
-          // Redirect to booking detail
-          router.push(`/booking/${booking.booking_code}`)
-        }
-      } catch (error) {
-        console.error('Error:', error)
-      }
+      // Bayar langsung - show modal
+      setShowQRIS(true)
     } else {
-      // QRIS payment
+      // QRIS payment - show QRIS image
       setShowQRIS(true)
     }
     
@@ -214,50 +201,147 @@ export default function PaymentPage() {
       {showQRIS && (
         <div className="qris-modal-overlay" onClick={() => setShowQRIS(false)}>
           <div className="qris-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="qris-content">
-              <div className="qris-badge">
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="24" cy="24" r="24" fill="white"/>
-                  <path d="M20 24L22.5 26.5L28 21" stroke="#3D3B6B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <h2 className="qris-title">Bayar Langsung</h2>
-              <p className="qris-subtitle">
-                Silahkan datang ke BaberShop<br />
-                Kang Cukur Adam's untuk melakukan<br />
-                pembayaran.
-              </p>
-            </div>
-
-            <div className="qris-details">
-              <div className="qris-shop-info">
-                <h3 className="qris-shop-name">Kang Cukur Adam's</h3>
-                <p className="qris-shop-date">{formatDate(booking.slots.date)}</p>
-              </div>
-              <p className="qris-service-name">{booking.services.name}</p>
-              
-              <div className="qris-payment-section">
-                <h4 className="qris-payment-title">Pembayaran</h4>
-                <div className="qris-payment-row">
-                  <span>{booking.services.name}</span>
-                  <span>{formatPrice(booking.services.price)}</span>
+            {paymentMethod === 'qris' ? (
+              // QRIS Payment
+              <>
+                <div className="qris-content">
+                  <h2 className="qris-title-main">Bayar dengan Qris</h2>
+                  <p className="qris-subtitle-main">
+                    Silahkan download lalu scan dengan<br />
+                    aplikasi dompet digital Anda.
+                  </p>
                 </div>
-                <div className="qris-payment-divider"></div>
-                <div className="qris-payment-row qris-payment-total">
-                  <span>Total</span>
-                  <span>{formatPrice(booking.services.price)}</span>
-                </div>
-              </div>
 
-              <div className="qris-actions">
-                <button className="qris-btn-cancel" onClick={() => setShowQRIS(false)}>
-                  Batalkan
-                </button>
-                <button className="qris-btn-confirm" onClick={handleConfirmQRIS} disabled={processing}>
-                  {processing ? 'Memproses...' : 'Oke'}
-                </button>
-              </div>
-            </div>
+                <div className="qris-image-container">
+                  <div className="qris-image-wrapper">
+                    <div className="qris-placeholder">
+                      <div className="qris-placeholder-header">
+                        <div className="qris-logo">QRIS</div>
+                        <div className="qris-logo-gpn">GPN</div>
+                      </div>
+                      <div className="qris-placeholder-merchant">
+                        <p className="qris-merchant-name">Kang Cukur Adam's</p>
+                        <p className="qris-merchant-id">NMID: XXXXXXXXXXXX</p>
+                        <p className="qris-merchant-tid">TID</p>
+                      </div>
+                      <div className="qris-qr-code">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="100" height="100" fill="white"/>
+                          {/* QR Code pattern */}
+                          <rect x="5" y="5" width="20" height="20" fill="black"/>
+                          <rect x="75" y="5" width="20" height="20" fill="black"/>
+                          <rect x="5" y="75" width="20" height="20" fill="black"/>
+                          <rect x="8" y="8" width="14" height="14" fill="white"/>
+                          <rect x="78" y="8" width="14" height="14" fill="white"/>
+                          <rect x="8" y="78" width="14" height="14" fill="white"/>
+                          <rect x="11" y="11" width="8" height="8" fill="black"/>
+                          <rect x="81" y="11" width="8" height="8" fill="black"/>
+                          <rect x="11" y="81" width="8" height="8" fill="black"/>
+                          {/* Random QR pattern */}
+                          <rect x="30" y="10" width="3" height="3" fill="black"/>
+                          <rect x="35" y="10" width="3" height="3" fill="black"/>
+                          <rect x="40" y="10" width="3" height="3" fill="black"/>
+                          <rect x="50" y="10" width="3" height="3" fill="black"/>
+                          <rect x="55" y="10" width="3" height="3" fill="black"/>
+                          <rect x="30" y="30" width="3" height="3" fill="black"/>
+                          <rect x="35" y="35" width="3" height="3" fill="black"/>
+                          <rect x="40" y="30" width="3" height="3" fill="black"/>
+                          <rect x="45" y="35" width="3" height="3" fill="black"/>
+                          <rect x="50" y="30" width="3" height="3" fill="black"/>
+                          <rect x="55" y="35" width="3" height="3" fill="black"/>
+                          <rect x="60" y="30" width="3" height="3" fill="black"/>
+                          <rect x="65" y="35" width="3" height="3" fill="black"/>
+                        </svg>
+                      </div>
+                      <p className="qris-instruction">SATU QRIS UNTUK SEMUA</p>
+                      <p className="qris-footer">Cek aplikasi penyedia gopay di www.aspi-qris.id</p>
+                      <p className="qris-amount">Diciptakan oleh: (Bisnis NMID: Versi cetak: 6.24.08.20</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="qris-details">
+                  <div className="qris-shop-info">
+                    <h3 className="qris-shop-name">Kang Cukur Adam's</h3>
+                    <p className="qris-shop-date">{formatDate(booking.slots.date)}</p>
+                  </div>
+                  <p className="qris-service-name">{booking.services.name}</p>
+                  
+                  <div className="qris-payment-section">
+                    <h4 className="qris-payment-title">Pembayaran</h4>
+                    <div className="qris-payment-row">
+                      <span>{booking.services.name}</span>
+                      <span>{formatPrice(booking.services.price)}</span>
+                    </div>
+                    <div className="qris-payment-divider"></div>
+                    <div className="qris-payment-row qris-payment-total">
+                      <span>Total</span>
+                      <span>{formatPrice(booking.services.price)}</span>
+                    </div>
+                  </div>
+
+                  <div className="qris-actions">
+                    <button className="qris-btn-cancel" onClick={() => setShowQRIS(false)}>
+                      Batalkan
+                    </button>
+                    <button className="qris-btn-download" onClick={handleConfirmQRIS} disabled={processing}>
+                      <span>{processing ? 'Memproses...' : 'Download'}</span>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 11L8 3M8 11L5 8M8 11L11 8M2 13H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              // Cash Payment
+              <>
+                <div className="qris-content">
+                  <div className="qris-badge">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="24" cy="24" r="24" fill="white"/>
+                      <path d="M20 24L22.5 26.5L28 21" stroke="#3D3B6B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <h2 className="qris-title">Bayar Langsung</h2>
+                  <p className="qris-subtitle">
+                    Silahkan datang ke BaberShop<br />
+                    Kang Cukur Adam's untuk melakukan<br />
+                    pembayaran.
+                  </p>
+                </div>
+
+                <div className="qris-details">
+                  <div className="qris-shop-info">
+                    <h3 className="qris-shop-name">Kang Cukur Adam's</h3>
+                    <p className="qris-shop-date">{formatDate(booking.slots.date)}</p>
+                  </div>
+                  <p className="qris-service-name">{booking.services.name}</p>
+                  
+                  <div className="qris-payment-section">
+                    <h4 className="qris-payment-title">Pembayaran</h4>
+                    <div className="qris-payment-row">
+                      <span>{booking.services.name}</span>
+                      <span>{formatPrice(booking.services.price)}</span>
+                    </div>
+                    <div className="qris-payment-divider"></div>
+                    <div className="qris-payment-row qris-payment-total">
+                      <span>Total</span>
+                      <span>{formatPrice(booking.services.price)}</span>
+                    </div>
+                  </div>
+
+                  <div className="qris-actions">
+                    <button className="qris-btn-cancel" onClick={() => setShowQRIS(false)}>
+                      Batalkan
+                    </button>
+                    <button className="qris-btn-confirm" onClick={handleConfirmQRIS} disabled={processing}>
+                      {processing ? 'Memproses...' : 'Oke'}
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

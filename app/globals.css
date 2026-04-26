@@ -3273,10 +3273,136 @@ input, select, textarea {
   margin-bottom: 12px;
 }
 
+.qris-title-main {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #FFFFFF;
+}
+
 .qris-subtitle {
   font-size: 14px;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
+}
+
+.qris-subtitle-main {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 20px;
+}
+
+.qris-image-container {
+  padding: 20px;
+  background: #3D3B6B;
+  display: flex;
+  justify-content: center;
+}
+
+.qris-image-wrapper {
+  background: #FFFFFF;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.qris-image {
+  width: 240px;
+  height: 240px;
+  display: block;
+  border-radius: 8px;
+}
+
+.qris-placeholder {
+  width: 280px;
+  background: #FFFFFF;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.qris-placeholder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.qris-logo {
+  font-size: 18px;
+  font-weight: 900;
+  color: #000000;
+  letter-spacing: 2px;
+}
+
+.qris-logo-gpn {
+  font-size: 14px;
+  font-weight: 700;
+  color: #E31E24;
+  background: linear-gradient(135deg, #E31E24 0%, #C41E3A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.qris-placeholder-merchant {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.qris-merchant-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 4px;
+}
+
+.qris-merchant-id {
+  font-size: 9px;
+  color: #666666;
+  margin-bottom: 2px;
+}
+
+.qris-merchant-tid {
+  font-size: 9px;
+  color: #666666;
+}
+
+.qris-qr-code {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 12px;
+  background: #FFFFFF;
+  border: 2px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.qris-qr-code svg {
+  width: 100%;
+  height: 100%;
+}
+
+.qris-instruction {
+  font-size: 10px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.qris-footer {
+  font-size: 8px;
+  color: #666666;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.qris-amount {
+  font-size: 7px;
+  color: #999999;
+  text-align: center;
 }
 
 .qris-details {
@@ -3384,4 +3510,38 @@ input, select, textarea {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
+}
+
+.qris-btn-download {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #3D3B6B;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.qris-btn-download:hover {
+  background: #4A4872;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(61, 59, 107, 0.3);
+}
+
+.qris-btn-download:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.qris-btn-download svg {
+  width: 16px;
+  height: 16px;
 }
