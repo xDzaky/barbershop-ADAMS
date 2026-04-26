@@ -119,15 +119,6 @@ export default function PaymentPage() {
 
   return (
     <div className="payment-container">
-      {/* Status Bar */}
-      <div className="status-bar">
-        <span className="status-time">19:27</span>
-        <div className="status-icons">
-          <span className="status-signal">📶</span>
-          <span className="status-battery">🔋</span>
-        </div>
-      </div>
-
       {/* Header */}
       <div className="payment-header">
         <button className="back-btn-payment" onClick={() => router.back()}>
