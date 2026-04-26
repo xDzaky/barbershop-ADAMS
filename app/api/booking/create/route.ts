@@ -60,10 +60,11 @@ export async function POST(req: NextRequest) {
   }
 
   // 5. Generate unique booking code with format DD-XXX (reset monthly)
-  const now = new Date()
-  const day = now.getDate().toString().padStart(2, '0')
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
-  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString()
+  // Use the slot date, not current date
+  const slotDate = new Date(slot.date)
+  const day = slotDate.getDate().toString().padStart(2, '0')
+  const monthStart = new Date(slotDate.getFullYear(), slotDate.getMonth(), 1).toISOString()
+  const monthEnd = new Date(slotDate.getFullYear(), slotDate.getMonth() + 1, 1).toISOString()
   
   // Count bookings this month to get next queue number
   const { count: monthCount } = await supabase

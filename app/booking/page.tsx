@@ -642,7 +642,9 @@ export default function BookingPage() {
                 <div className="bookingv3-calendar-grid">
                   {monthGrid.map((cell) => {
                     const isSelected = cell.iso === selectedDate
-                    const isPast = cell.iso < new Date().toISOString().slice(0, 10)
+                    // Allow today, only block dates before today
+                    const today = new Date().toISOString().slice(0, 10)
+                    const isPast = cell.iso < today
                     return (
                       <button
                         key={cell.iso}
