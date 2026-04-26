@@ -219,40 +219,102 @@ export default function PaymentPage() {
                         <div className="qris-logo">QRIS</div>
                         <div className="qris-logo-gpn">GPN</div>
                       </div>
+                      
                       <div className="qris-placeholder-merchant">
                         <p className="qris-merchant-name">Kang Cukur Adam's</p>
                         <p className="qris-merchant-id">NMID: XXXXXXXXXXXX</p>
                         <p className="qris-merchant-tid">TID</p>
                       </div>
+                      
                       <div className="qris-qr-code">
-                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                          <rect width="100" height="100" fill="white"/>
-                          {/* QR Code pattern */}
-                          <rect x="5" y="5" width="20" height="20" fill="black"/>
-                          <rect x="75" y="5" width="20" height="20" fill="black"/>
-                          <rect x="5" y="75" width="20" height="20" fill="black"/>
-                          <rect x="8" y="8" width="14" height="14" fill="white"/>
-                          <rect x="78" y="8" width="14" height="14" fill="white"/>
-                          <rect x="8" y="78" width="14" height="14" fill="white"/>
-                          <rect x="11" y="11" width="8" height="8" fill="black"/>
-                          <rect x="81" y="11" width="8" height="8" fill="black"/>
-                          <rect x="11" y="81" width="8" height="8" fill="black"/>
-                          {/* Random QR pattern */}
-                          <rect x="30" y="10" width="3" height="3" fill="black"/>
-                          <rect x="35" y="10" width="3" height="3" fill="black"/>
-                          <rect x="40" y="10" width="3" height="3" fill="black"/>
-                          <rect x="50" y="10" width="3" height="3" fill="black"/>
-                          <rect x="55" y="10" width="3" height="3" fill="black"/>
-                          <rect x="30" y="30" width="3" height="3" fill="black"/>
-                          <rect x="35" y="35" width="3" height="3" fill="black"/>
-                          <rect x="40" y="30" width="3" height="3" fill="black"/>
-                          <rect x="45" y="35" width="3" height="3" fill="black"/>
-                          <rect x="50" y="30" width="3" height="3" fill="black"/>
-                          <rect x="55" y="35" width="3" height="3" fill="black"/>
-                          <rect x="60" y="30" width="3" height="3" fill="black"/>
-                          <rect x="65" y="35" width="3" height="3" fill="black"/>
+                        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="120" height="120" fill="white"/>
+                          
+                          {/* Top-left corner */}
+                          <rect x="8" y="8" width="28" height="28" fill="black"/>
+                          <rect x="12" y="12" width="20" height="20" fill="white"/>
+                          <rect x="16" y="16" width="12" height="12" fill="black"/>
+                          
+                          {/* Top-right corner */}
+                          <rect x="84" y="8" width="28" height="28" fill="black"/>
+                          <rect x="88" y="12" width="20" height="20" fill="white"/>
+                          <rect x="92" y="16" width="12" height="12" fill="black"/>
+                          
+                          {/* Bottom-left corner */}
+                          <rect x="8" y="84" width="28" height="28" fill="black"/>
+                          <rect x="12" y="88" width="20" height="20" fill="white"/>
+                          <rect x="16" y="92" width="12" height="12" fill="black"/>
+                          
+                          {/* QR pattern - horizontal lines */}
+                          <rect x="44" y="12" width="4" height="4" fill="black"/>
+                          <rect x="52" y="12" width="4" height="4" fill="black"/>
+                          <rect x="60" y="12" width="4" height="4" fill="black"/>
+                          <rect x="68" y="12" width="4" height="4" fill="black"/>
+                          
+                          <rect x="44" y="20" width="4" height="4" fill="black"/>
+                          <rect x="56" y="20" width="4" height="4" fill="black"/>
+                          <rect x="64" y="20" width="4" height="4" fill="black"/>
+                          
+                          <rect x="48" y="28" width="4" height="4" fill="black"/>
+                          <rect x="60" y="28" width="4" height="4" fill="black"/>
+                          <rect x="72" y="28" width="4" height="4" fill="black"/>
+                          
+                          {/* Middle section */}
+                          <rect x="12" y="44" width="4" height="4" fill="black"/>
+                          <rect x="20" y="44" width="4" height="4" fill="black"/>
+                          <rect x="28" y="44" width="4" height="4" fill="black"/>
+                          
+                          <rect x="44" y="44" width="4" height="4" fill="black"/>
+                          <rect x="52" y="44" width="4" height="4" fill="black"/>
+                          <rect x="60" y="44" width="4" height="4" fill="black"/>
+                          <rect x="68" y="44" width="4" height="4" fill="black"/>
+                          
+                          <rect x="88" y="44" width="4" height="4" fill="black"/>
+                          <rect x="96" y="44" width="4" height="4" fill="black"/>
+                          <rect x="104" y="44" width="4" height="4" fill="black"/>
+                          
+                          <rect x="16" y="52" width="4" height="4" fill="black"/>
+                          <rect x="32" y="52" width="4" height="4" fill="black"/>
+                          <rect x="48" y="52" width="4" height="4" fill="black"/>
+                          <rect x="64" y="52" width="4" height="4" fill="black"/>
+                          <rect x="80" y="52" width="4" height="4" fill="black"/>
+                          <rect x="96" y="52" width="4" height="4" fill="black"/>
+                          
+                          <rect x="12" y="60" width="4" height="4" fill="black"/>
+                          <rect x="28" y="60" width="4" height="4" fill="black"/>
+                          <rect x="44" y="60" width="4" height="4" fill="black"/>
+                          <rect x="60" y="60" width="4" height="4" fill="black"/>
+                          <rect x="76" y="60" width="4" height="4" fill="black"/>
+                          <rect x="92" y="60" width="4" height="4" fill="black"/>
+                          <rect x="108" y="60" width="4" height="4" fill="black"/>
+                          
+                          <rect x="20" y="68" width="4" height="4" fill="black"/>
+                          <rect x="36" y="68" width="4" height="4" fill="black"/>
+                          <rect x="52" y="68" width="4" height="4" fill="black"/>
+                          <rect x="68" y="68" width="4" height="4" fill="black"/>
+                          <rect x="84" y="68" width="4" height="4" fill="black"/>
+                          <rect x="100" y="68" width="4" height="4" fill="black"/>
+                          
+                          {/* Bottom section */}
+                          <rect x="44" y="88" width="4" height="4" fill="black"/>
+                          <rect x="52" y="88" width="4" height="4" fill="black"/>
+                          <rect x="60" y="88" width="4" height="4" fill="black"/>
+                          <rect x="68" y="88" width="4" height="4" fill="black"/>
+                          <rect x="76" y="88" width="4" height="4" fill="black"/>
+                          
+                          <rect x="48" y="96" width="4" height="4" fill="black"/>
+                          <rect x="64" y="96" width="4" height="4" fill="black"/>
+                          <rect x="80" y="96" width="4" height="4" fill="black"/>
+                          <rect x="96" y="96" width="4" height="4" fill="black"/>
+                          
+                          <rect x="44" y="104" width="4" height="4" fill="black"/>
+                          <rect x="60" y="104" width="4" height="4" fill="black"/>
+                          <rect x="76" y="104" width="4" height="4" fill="black"/>
+                          <rect x="92" y="104" width="4" height="4" fill="black"/>
+                          <rect x="108" y="104" width="4" height="4" fill="black"/>
                         </svg>
                       </div>
+                      
                       <p className="qris-instruction">SATU QRIS UNTUK SEMUA</p>
                       <p className="qris-footer">Cek aplikasi penyedia gopay di www.aspi-qris.id</p>
                       <p className="qris-amount">Diciptakan oleh: (Bisnis NMID: Versi cetak: 6.24.08.20</p>
