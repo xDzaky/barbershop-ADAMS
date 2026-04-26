@@ -23,6 +23,7 @@ export default function PaymentPage() {
   const [paymentMethod, setPaymentMethod] = useState<'qris' | 'cash'>('cash')
   const [showQRIS, setShowQRIS] = useState(false)
   const [processing, setProcessing] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   useEffect(() => {
     if (!bookingId) return
@@ -77,13 +78,21 @@ export default function PaymentPage() {
       })
 
       if (response.ok) {
-        router.push(`/booking/${booking.booking_code}`)
+        // Tutup modal QRIS/Cash
+        setShowQRIS(false)
+        
+        // Tampilkan animasi sukses
+        setShowSuccess(true)
+        
+        // Redirect setelah 2 detik
+        setTimeout(() => {
+          router.push(`/booking/${booking.booking_code}`)
+        }, 2000)
       }
     } catch (error) {
       console.error('Error:', error)
+      setProcessing(false)
     }
-    
-    setProcessing(false)
   }
 
   if (loading) {
@@ -196,6 +205,30 @@ export default function PaymentPage() {
           </svg>
         </button>
       </div>
+
+      {/* Success Animation Modal */}
+      {showSuccess && (
+        <div className="success-modal-overlay">
+          <div className="success-modal">
+            <div className="success-checkmark">
+              <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="40" cy="40" r="38" stroke="#10B981" strokeWidth="4" className="success-circle"/>
+                <path d="M25 40L35 50L55 30" stroke="#10B981" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="success-check"/>
+              </svg>
+            </div>
+            <h2 className="success-title">Pembayaran Berhasil!</h2>
+            <p className="success-message">
+              {paymentMethod === 'qris' 
+                ? 'Silahkan download QRIS dan lakukan pembayaran'
+                : 'Silahkan datang ke barbershop untuk melakukan pembayaran'}
+            </p>
+            <div className="success-loader">
+              <div className="success-loader-bar"></div>
+            </div>
+            <p className="success-redirect">Mengalihkan ke halaman detail...</p>
+          </div>
+        </div>
+      )}
 
       {/* QRIS Modal */}
       {showQRIS && (
