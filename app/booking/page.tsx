@@ -45,22 +45,6 @@ const MAP_URL =
 
 const PRICE_LIST: PriceListItem[] = [
   {
-    key: 'haircut-basic',
-    category: 'haircut',
-    name: 'Cukur Dewasa & Anak-anak',
-    price: 20000,
-    onlineBookable: false,
-    keywords: ['dewasa', 'anak'],
-  },
-  {
-    key: 'haircut-wash-simple',
-    category: 'haircut',
-    name: 'Cukur + keramas + simple hair care',
-    price: 25000,
-    onlineBookable: true,
-    keywords: ['keramas', 'simple hair care'],
-  },
-  {
     key: 'queue-booking',
     category: 'haircut',
     name: 'Booking Nomor Antrian Cukur',
@@ -75,46 +59,6 @@ const PRICE_LIST: PriceListItem[] = [
     price: 30000,
     onlineBookable: true,
     keywords: ['booking cukur', 'shc'],
-  },
-  {
-    key: 'colour-black',
-    category: 'colouring',
-    name: 'Hitam',
-    price: 15000,
-    onlineBookable: true,
-    keywords: ['hitam'],
-  },
-  {
-    key: 'colour-highlight',
-    category: 'colouring',
-    name: 'Highlight',
-    price: 80000,
-    onlineBookable: true,
-    keywords: ['highlight', 'hihglight'],
-  },
-  {
-    key: 'colour-highlight-warna',
-    category: 'colouring',
-    name: 'Highlight + Warna',
-    price: 100000,
-    onlineBookable: true,
-    keywords: ['warna', 'highlight warna', 'hightliht warna'],
-  },
-  {
-    key: 'colour-fashion',
-    category: 'colouring',
-    name: 'Fashion colour',
-    price: 200000,
-    onlineBookable: true,
-    keywords: ['fashion colour'],
-  },
-  {
-    key: 'chemical-curly',
-    category: 'chemical',
-    name: 'Curly perm',
-    price: 150000,
-    onlineBookable: true,
-    keywords: ['curly perm'],
   },
 ]
 
@@ -240,7 +184,7 @@ export default function BookingPage() {
   const [submitting, setSubmitting] = useState(false)
   const [customerName, setCustomerName] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
-  const [selectedServiceKeys, setSelectedServiceKeys] = useState<string[]>(['queue-booking'])
+  const [selectedServiceKey, setSelectedServiceKey] = useState<string>('queue-booking')
   const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().slice(0, 10))
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const now = new Date()
@@ -309,21 +253,18 @@ export default function BookingPage() {
   const groupedServices = useMemo(() => {
     return {
       haircut: servicesByPriceList.filter((item) => item.category === 'haircut'),
-      colouring: servicesByPriceList.filter((item) => item.category === 'colouring'),
-      chemical: servicesByPriceList.filter((item) => item.category === 'chemical'),
     }
   }, [servicesByPriceList])
 
-  const selectedItems = useMemo(
-    () => servicesByPriceList.filter((item) => selectedServiceKeys.includes(item.key)),
-    [selectedServiceKeys, servicesByPriceList]
+  const selectedItem = useMemo(
+    () => servicesByPriceList.find((item) => item.key === selectedServiceKey) || null,
+    [selectedServiceKey, servicesByPriceList]
   )
-  const selectedHaircutItem = selectedItems.find((item) => item.category === 'haircut') || null
-  const selectedPriceItem = selectedHaircutItem || selectedItems[0] || null
+  const selectedPriceItem = selectedItem || null
   const selectedService = selectedPriceItem
     ? resolveServiceForPriceListItem(selectedPriceItem, services as ServiceRecord[])
     : null
-  const totalSelectedPrice = selectedItems.reduce((sum, item) => sum + item.price, 0)
+  const totalSelectedPrice = selectedPriceItem ? selectedPriceItem.price : 0
 
   const daySlotRanges = useMemo(() => getOpeningRangesForDate(selectedDate), [selectedDate])
   const isClosedDay = daySlotRanges.length === 0
@@ -366,14 +307,12 @@ export default function BookingPage() {
     if (!item) return
 
     if (!item.onlineBookable) {
-      setError('Layanan 20K hanya untuk datang langsung, tidak bisa booking online')
+      setError('Layanan ini tidak tersedia untuk booking online')
       return
     }
     setError('')
 
-    setSelectedServiceKeys((current) =>
-      current.includes(item.key) ? current.filter((key) => key !== item.key) : [...current, item.key]
-    )
+    setSelectedServiceKey(item.key)
   }
 
   const handleContinueBooking = () => {
@@ -382,13 +321,8 @@ export default function BookingPage() {
       return
     }
 
-    if (selectedItems.length === 0) {
-      setError('Pilih minimal satu pricelist booking')
-      return
-    }
-
-    if (!selectedItems.some((item) => item.category === 'haircut')) {
-      setError('Untuk booking cukur rambut, pilih salah satu layanan 25K atau 30K')
+    if (!selectedItem) {
+      setError('Pilih salah satu layanan booking')
       return
     }
 
@@ -438,7 +372,7 @@ export default function BookingPage() {
     idx: number,
     clickable = false
   ) => {
-    const isActive = selectedServiceKeys.includes(item.key)
+    const isActive = selectedServiceKey === item.key
     const isDisabled = clickable && !item.onlineBookable
 
     return (
@@ -535,12 +469,6 @@ export default function BookingPage() {
               <section className="bookingv3-service-list">
                 <h3>Cukur Rambut</h3>
                 {groupedServices.haircut.map((item, idx) => renderPriceRow(item, idx))}
-
-                <h3>Colouring Rambut</h3>
-                {groupedServices.colouring.map((item, idx) => renderPriceRow(item, idx + 1))}
-
-                <h3>Hair Chemical Service</h3>
-                {groupedServices.chemical.map((item, idx) => renderPriceRow(item, idx + 2))}
               </section>
             )}
 
@@ -577,28 +505,18 @@ export default function BookingPage() {
                 <div className="bookingv3-service-list">
                   <h4 className="bookingv3-group-title">Cukur Rambut</h4>
                   {groupedServices.haircut.map((item, idx) => renderPriceRow(item, idx, true))}
-
-                  <h4 className="bookingv3-group-title">Colouring Rambut</h4>
-                  {groupedServices.colouring.map((item, idx) => renderPriceRow(item, idx + 1, true))}
-
-                  <h4 className="bookingv3-group-title">Hair Chemical Service</h4>
-                  {groupedServices.chemical.map((item, idx) => renderPriceRow(item, idx + 2, true))}
                 </div>
 
                 <p className="bookingv3-helper">
-                  Untuk booking cukur rambut, pilih salah satu layanan 25K atau 30K. Layanan 20K hanya untuk datang langsung.
+                  Pilih salah satu layanan booking untuk melanjutkan.
                 </p>
-                {selectedItems.length > 0 && (
+                {selectedItem && (
                   <div className="bookingv3-selected-box">
                     <div className="bookingv3-selected-title">Pilihan booking</div>
-                    {selectedItems.map((item) => (
-                      <div key={item.key} className="bookingv3-selected-row">
-                        <span>{item.name}</span>
-                        <button type="button" onClick={() => handleTogglePrice(item.key)}>
-                          Hapus
-                        </button>
-                      </div>
-                    ))}
+                    <div className="bookingv3-selected-row">
+                      <span>{selectedItem.name}</span>
+                      <span>{Math.round(selectedItem.price / 1000)}K</span>
+                    </div>
                   </div>
                 )}
                 {error && <p className="bookingv3-error">{error}</p>}
@@ -709,12 +627,12 @@ export default function BookingPage() {
 
                 <div className="bookingv3-payment-card">
                   <h3>Pembayaran</h3>
-                  {selectedItems.map((item) => (
-                    <div key={item.key} className="bookingv3-payment-row">
-                      <span>{item.name}</span>
-                      <span>{Math.round(item.price / 1000)}K</span>
+                  {selectedItem && (
+                    <div key={selectedItem.key} className="bookingv3-payment-row">
+                      <span>{selectedItem.name}</span>
+                      <span>{Math.round(selectedItem.price / 1000)}K</span>
                     </div>
-                  ))}
+                  )}
                   <div className="bookingv3-payment-total">
                     <span>Total</span>
                     <span>{Math.round(totalSelectedPrice / 1000)}K</span>
